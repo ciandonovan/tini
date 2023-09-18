@@ -76,17 +76,20 @@ configure_file (
 	@ONLY
 )
 
+# Find systemd library using pkg-config
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(SYSTEMD REQUIRED systemd)
+
 
 include_directories ("${PROJECT_BINARY_DIR}")
 
 add_executable (tini src/tini.c)
 
-add_executable (tini-static src/tini.c)
-set_target_properties (tini-static PROPERTIES LINK_FLAGS "-Wl,--no-export-dynamic -static")
+# Include systemd library and headers
+target_link_libraries(tini -lsystemd)
 
 # Installation
 install (TARGETS tini DESTINATION bin)
-install (TARGETS tini-static DESTINATION bin)
 
 # Packaging
 include (InstallRequiredSystemLibraries)

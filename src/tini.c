@@ -15,6 +15,8 @@
 #include <unistd.h>
 #include <stdbool.h>
 
+#include <systemd/sd-daemon.h>
+
 #include "tiniConfig.h"
 #include "tiniLicense.h"
 
@@ -662,7 +664,14 @@ int main(int argc, char *argv[]) {
 	}
 	free(child_args_ptr);
 
+    /* Notify service started */
+	sd_notify(0, "READY=1");
+
 	while (1) {
+
+		/* Kick watchdog */
+		sd_notify(0, "WATCHDOG=1");
+
 		/* Wait for one signal, and forward it */
 		if (wait_and_forward_signal(&parent_sigset, child_pid)) {
 			return 1;

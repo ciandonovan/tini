@@ -78,7 +78,7 @@ configure_file (
 
 # Find systemd library using pkg-config
 find_package(PkgConfig REQUIRED)
-pkg_check_modules(SYSTEMD REQUIRED systemd)
+pkg_check_modules(SYSTEMD REQUIRED libsystemd)
 
 
 include_directories ("${PROJECT_BINARY_DIR}")
